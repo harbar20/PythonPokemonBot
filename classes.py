@@ -3,7 +3,20 @@ import pokebase as pb
 class Pokemon():
     def __init__(self, pokemonName, nickname="", level="100", gender="F", isShiny=False,
                 moves=["", "", "", ""], item="", ability="",
-                EVs={}, IVs={}, nature=""):
+                EVs={"HP":0,
+                     "Atk":0,
+                     "Def":0,
+                     "SpA":0,
+                     "Spd":0,
+                     "Spe":0
+                    }, 
+                IVs={"HP":0,
+                     "Atk":0,
+                     "Def":0,
+                     "SpA":0,
+                     "Spd":0,
+                     "Spe":0
+                    }, nature=""):
         self.name = pokemonName
         self.nickname = nickname
         self.level = level
@@ -92,6 +105,9 @@ class Team():
     def get_pokemon_info(self, pokemonName):
         return self.team[pokemonName]
     
+    def change_team_name(self, newName):
+        self.team_name = newName
+    
     def add_pokemon(self, pokemonName, nickname="", level="100", gender="F", isShiny=False,
                     moves=[], item="", ability="",
                     EVs={}, IVs={}, nature=""):        
@@ -115,5 +131,11 @@ class Team():
     def change_ability(self, pokemonName, newAbility):
         self.team[pokemonName].change_ability(newAbility)
     
-    def change_team_name(self, newName):
-        self.team_name = newName
+    def change_ev(self, pokemonName, evStat, evNum):
+        self.team[pokemonName].change_ev(evStat, evNum)
+    
+    def change_iv(self, pokemonName, ivStat, ivNum):
+        self.team[pokemonName].change_iv(ivStat, ivNum)
+    
+    def change_nature(self, pokemonName, newNature):
+        self.team[pokemonName].change_nature(newNature)
