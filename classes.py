@@ -13,22 +13,12 @@ def find_nth(haystack, needle, n):
     return start
     
 class Pokemon():
-    def __init__(self, pokemonName, nickname="", isShiny=False,
-                moves=["", "", "", ""], item="", ability="",
-                EVs={"HP":0,
-                     "Atk":0,
-                     "Def":0,
-                     "SpA":0,
-                     "Spd":0,
-                     "Spe":0
-                    }, 
-                IVs={"HP":0,
-                     "Atk":0,
-                     "Def":0,
-                     "SpA":0,
-                     "Spd":0,
-                     "Spe":0
-                    }, nature=""):
+    def __init__(self, pokemonName, nickname="", isShiny=False, item="", 
+                ability="",
+                EVs="", 
+                IVs="", 
+                nature="",
+                moves=["", "", "", ""]):
         self.name = pokemonName
         self.nickname = nickname
         self.isShiny = isShiny
@@ -89,6 +79,7 @@ class Team():
     def get_team_name(self):
         return self.team_name
     
+    #TODO: port showdown's import code
     def import_showdown_text(self, showdown_text):
         """
         Imports showdown teams and saves it as the team.
@@ -97,7 +88,10 @@ class Team():
         pokemonTextList = showdown_text.split("\n\n")
         
         #going through each pokemon data in the list
+        numIterations = 1
         for pokemonData in pokemonTextList:
+            if numIterations > 6:
+                break
             counter = 2
             #getting name/nickname from pokemon
             currentIndex = pokemonData.find("@") - 1
@@ -113,7 +107,7 @@ class Team():
             #getting the item of the pokemon
             currentIndex += 3
             item = pokemonData[currentIndex:pokemonData.find("\n")]
-            #print("Item: ", currentIndex)
+            #print("Item: ", item)
             
             #getting the ability of the pokemon
             currentIndex = pokemonData.find("\n") + 10
@@ -128,20 +122,23 @@ class Team():
                 counter = 4
             else:
                 isShiny = False
-                currentIndex += 1#to be changed soon
+                currentIndex += 1
                 counter = 3
             
             #print("Shiny: ", currentIndex)
             
             #getting the pokemon's EV's
-            currentIndex += 5
+            currentIndex += 2
             EVs = pokemonData[currentIndex:find_nth(pokemonData, "\n", counter)]
             
             #getting the pokemon's nature
             currentIndex = find_nth(pokemonData, "\n", counter) + 1
             nature = pokemonData[currentIndex:find_nth(pokemonData, "\n", counter+1)]
-            nature = nature[:-8]
-            counter += 1
+            if "Nature" in nature:
+                nature = nature[:-7]
+                counter += 1
+            else:
+                nature = "Serious"
             
             #print("Nature: ", nature)
             
@@ -162,7 +159,7 @@ class Team():
             newPokemonData = pokemonData[currentIndex:]
             moves = []
             for i in newPokemonData.split("\n"):
-                moves.append(i[2:-2])
+                moves.append(i[2:])
             
             #print("Moves: ", moves)
         
@@ -170,15 +167,50 @@ class Team():
             newText = {"name":name, "nickname":nickname, "item":item, "ability":ability,
                        "shiny": isShiny, "evs": EVs, "nature":nature, "ivs": IVs, "moves":moves}
             
+            #print(newText)
+            
             #adding a Pokemon class to the team with all these attributes
-            self.team[name] = Pokemon(name, nickname, item, ability, 
-                                      isShiny, EVs, nature, IVs, moves)
+            self.team[name] = Pokemon(name, nickname, isShiny, item, ability, 
+                                      EVs, IVs, nature, moves)
+
+            numIterations += 1
     
+    #TODO: port showdown's export code
     def export_showdown_text(self):
         """
         Effectively exports team in Showdown team format.
         """
-        pass
+        #literally just returns it in showdown format with string formatting
+        returnStr = ""
+        
+        #random counter to make sure count doesn't go more than 6.
+        i = 1
+        for pokemon, pokemonData in self.team.items():
+            if i > 6:
+                break
+            #decides if pokemon is shiny
+            if pokemonData.isShiny:
+                shiny = "Yes"
+            else:
+                shiny = "No"
+            
+            #making the text. this 'f' before the string is NOT A TYPO.
+            returnStr += f""" 
+{pokemonData.nickname} ({pokemonData.name}) @ {pokemonData.item} 
+Ability: {pokemonData.ability} 
+Shiny: {shiny} 
+EVs: {pokemonData.ev} 
+{pokemonData.nature} Nature 
+IVs: {pokemonData.iv} 
+- {pokemonData.moves[0]} 
+- {pokemonData.moves[1]} 
+- {pokemonData.moves[2]} 
+- {pokemonData.moves[3]} 
+"""
+            i += 1
+        
+        print(returnStr)
+        return returnStr
     
     def get_pokemon_info(self, pokemonName):
         return self.team[pokemonName]
@@ -219,3 +251,7 @@ class Team():
         self.team[pokemonName].change_nature(newNature)
     
 team = Team("IGL Pokemon Team")
+
+team.import_showdown_text("""
+""")
+team.export_showdown_text()
