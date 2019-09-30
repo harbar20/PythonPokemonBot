@@ -1,3 +1,10 @@
+import requests
+
+#list of all pokemon names
+with open("pokemon_names.txt") as f:
+    allpokemon = [i.replace('\n', '') for i in f]
+
+#imports showdown text. to be used in TeamClass
 def importpokemon(pokemonstring):
     """
     Imports showdown pokemon and returns it as a PokemonClass instance.
@@ -59,6 +66,15 @@ def importpokemon(pokemonstring):
 
     return returnval
 
+#constant lists of unchanging pokemon values
+genders = ['F', 'M', '']
+stats = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe']
+natures = ['Adamant', 'Bashful', 'Bold', 'Brave', 'Calm', 
+           'Careful', 'Docile','Gentle', 'Hardy', 'Hasty', 
+           'Impish', 'Jolly', 'Lax', 'Lonely', 'Mild', 
+           'Modest', 'Naive', 'Naughty', 'Quiet', 'Quirky', 
+           'Rash', 'Relaxed', 'Sassy', 'Serious', 'Timid']
+
 class PokemonClass():
     def __init__(self, Moves = [], Item = '', Nickname = '', Species = '', Gender = '',
                 Ability = '', Level = '100', Shiny = False, Happiness = '255', 
@@ -76,6 +92,10 @@ class PokemonClass():
         self.EVs = EVs
         self.IVs = IVs
         self.Nature = Nature
+        
+        #lists of all valid attributes to this particular pokemon
+        self.validAbilities = [i["ability"]["name"] for i in list(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
+        self.validMoves = [i["move"]["name"] for i in list(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
     
     #accessor functions
     def get_Species(self):
@@ -100,31 +120,65 @@ class PokemonClass():
         return self.IVs
     def get_Nature(self):
         return self.Nature
-    
+     
     #mutator functions
+    #returns 0 if valid, 1 or 2 if invalid
     def change_nickname(self, newNickname):
+        if len(newNickname) > 16:
+            return 1
         self.Nickname = newNickname 
-    def toggle_Gender(self, newGender):
-        self.Gender = newGender    
+        return 0
+    def change_Gender(self, newGender):
+        if newGender.upper() not in genders:
+            return 1
+        self.Gender = newGender  
+        return 0  
     def toggle_Shiny(self):
         if self.Shiny:
             self.Shiny = False
         else:
             self.Shiny = True
+        return 0
     def change_Happiness(self, newHappiness):
+        if newHappiness > 255 or newHappiness < 0:
+            return 1
         self.Happiness = newHappiness
+        return 0
     def change_Move(self, oldMove, newMove):
+        if newMove.lower().replace(' ', '-') not in self.validMoves:
+            return 1
         self.Moves[self.Moves.index(oldMove)] = newMove
+        return 0
     def change_Item(self, newItem):
+        itemString = newItem.lower().replace(' ', '-')
+        if list(requests.get(f'https://pokeapi.co/api/v2/pokemon/{itemString}')) == 'Not Found':
+            return 1
         self.Item = newItem
+        return 0
     def change_Ability(self, newAbility):
+        if newAbility.lower().replace(' ', '-') not in self.validAbilities:
+            return 1
         self.Ability = newAbility
+        return 0
     def change_EVs(self, evStat, evNum):
+        if evStat not in stats:
+            return 1
+        elif evNum > 252 or evNum < 0:
+            return 2
         self.EVs[evStat] = evNum
+        return 0
     def change_IVs(self, ivStat, ivNum):
+        if ivStat not in stats:
+            return 1
+        elif ivNum > 252 or ivNum < 0:
+            return 2
         self.IVs[ivStat] = ivNum
+        return 0
     def change_Nature(self, newNature):
+        if newNature not in natures:
+            return 1
         self.Nature = newNature
+        return 0
 
 class TeamClass():
     def __init__(self, team_name=''):
@@ -181,9 +235,13 @@ class TeamClass():
         self.team_name = newName
     
     def add_pokemon(self, Moves = [], Item = '', Nickname = '', Species = '', Gender = 'F',
-                Ability = '', Level = '100', Shiny = False, Happiness = '255', EVs = {}, IVs = {}, Nature = ''):        
+                Ability = '', Level = '100', Shiny = False, Happiness = '255', EVs = {}, IVs = {}, Nature = ''):
+        #this function only has to validate the Species, everything else is done by PokemonClass
+        if Species not in allpokemon:
+            return 1        
         self.team[pokemonID+1] = PokemonClass(Moves, Item, Nickname, Species, Gender, Ability,
                                         Level, Shiny, Happiness, EVs, IVs, Nature)
+        return 0
     
     def remove_pokemon(self, pokemonID):
         self.team.pop(pokemonID+1)
