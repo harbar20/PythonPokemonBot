@@ -1,4 +1,5 @@
 import requests
+import json
 
 #list of all pokemon names
 with open("pokemon_names.txt") as f:
@@ -51,7 +52,7 @@ def importpokemon(pokemonstring):
         if k in ['EVs','IVs']: # performing additional operations on EVs and IVs
             pokemon[k] = v.split('/') # splits into individual stats
             pokemon[k] = [l.strip() for l in pokemon[k]] # strips each element
-            pokemon[k] = dict(s.split()[::-1] for s in pokemon[k]) # converts the list into a dictionary
+            pokemon[k] = json.load(s.split()[::-1] for s in pokemon[k]) # converts the list into a json.loadionary
 
 
     if 'Shiny' in pokemon.keys(): # converts the 'Yes' that Showdown uses to a python Bool
@@ -92,10 +93,16 @@ class PokemonClass():
         self.EVs = EVs
         self.IVs = IVs
         self.Nature = Nature
+        #stats starts with base stats
+        self.Stats = {}
+        url = f'https://pokeapi.co/api/v2/pokemon/{self.Species}'
+        r = json.load(requests.get(url))["stats"]
+        for i in r:
+            self.Stats[i["stat"]["name"]] = i["base-stat"]
         
         #lists of all valid attributes to this particular pokemon
-        self.validAbilities = [i["ability"]["name"] for i in list(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
-        self.validMoves = [i["move"]["name"] for i in list(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
+        self.validAbilities = [i["ability"]["name"] for i in json.load(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
+        self.validMoves = [i["move"]["name"] for i in json.load(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
     
     #accessor functions
     def get_Species(self):
@@ -120,6 +127,8 @@ class PokemonClass():
         return self.IVs
     def get_Nature(self):
         return self.Nature
+    def get_Stats(self):
+        return self.Stats
      
     #mutator functions
     #returns 0 if valid, 1 or 2 if invalid
@@ -151,7 +160,7 @@ class PokemonClass():
         return 0
     def change_Item(self, newItem):
         itemString = newItem.lower().replace(' ', '-')
-        if list(requests.get(f'https://pokeapi.co/api/v2/pokemon/{itemString}')) == 'Not Found':
+        if requests.get(f'https://pokeapi.co/api/v2/item/{itemString}') == 'Not Found':
             return 1
         self.Item = newItem
         return 0
@@ -178,6 +187,13 @@ class PokemonClass():
         if newNature not in natures:
             return 1
         self.Nature = newNature
+        return 0
+    def change_Stats(self, statName, statNum):
+        if statName not in stats:
+            return 1
+        elif statNum < 0:
+            return 2
+        self.Stats[statName] = statNum
         return 0
 
 class TeamClass():
@@ -248,22 +264,3 @@ class TeamClass():
     
     def change_nickname(self, pokemonID, newNickname):
         self.team[pokemonID+1].change_nickname(newNickname)
-
-    def change_move(self, pokemonID, oldMove, newMove):
-        selfTeam = self.get_team()
-        self.team[pokemonID+1].moves[selfTeam.index(oldMove)] = newMove
-    
-    def change_item(self, pokemonID, item):
-        self.team[pokemonID+1].change_item(item)
-    
-    def change_ability(self, pokemonID, newAbility):
-        self.team[pokemonID+1].change_ability(newAbility)
-    
-    def change_ev(self, pokemonID, evStat, evNum):
-        self.team[pokemonID+1].change_ev(evStat, evNum)
-    
-    def change_iv(self, pokemonID, ivStat, ivNum):
-        self.team[pokemonID+1].change_iv(ivStat, ivNum)
-    
-    def change_nature(self, pokemonID, newNature):
-        self.team[pokemonID+1].change_nature(newNature)

@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from classes import Pokemon, Team
+from classes import *
 
 bot = commands.Bot(command_prefix="b!")
 

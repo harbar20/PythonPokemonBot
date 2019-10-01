@@ -1,0 +1,227 @@
+{
+    "Adamant": {
+        "HP": 1,
+        "Atk": 1.1,
+        "Def": 1,
+        "SpA": 0.9,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": "+Atk, -SpA"
+    },
+    "Bashful": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": ""
+    },
+    "Bold": {
+        "HP": 1,
+        "Atk": 0.9,
+        "Def": 1.1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": "+Def, -Atk"
+    },
+    "Brave": {
+        "HP": 1,
+        "Atk": 1.1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 0.9,
+        "Summary": "+Atk, -Spe"
+    },
+    "Calm": {
+        "HP": 1,
+        "Atk": 0.9,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1.1,
+        "Spe": 1,
+        "Summary": "+SpD, -Atk"
+    },
+    "Careful": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 0.9,
+        "SpD": 1.1,
+        "Spe": 1,
+        "Summary": "+SpD, -SpA"
+    },
+    "Docile": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": ""
+    },
+    "Gentle": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 0.9,
+        "SpA": 1,
+        "SpD": 1.1,
+        "Spe": 1,
+        "Summary": "+SpD, -Def"
+    },
+    "Hardy": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": ""
+    },
+    "Hasty": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 0.9,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1.1,
+        "Summary": "+Spe, -Def"
+    },
+    "Impish": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1.1,
+        "SpA": 0.9,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": "+Def, -SpA"
+    },
+    "Jolly": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 0.9,
+        "SpD": 1,
+        "Spe": 1.1,
+        "Summary": "+Spe, -SpA"
+    },
+    "Lax": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1.1,
+        "SpA": 1,
+        "SpD": 0.9,
+        "Spe": 1,
+        "Summary": "+Def, -SpD"
+    },
+    "Lonely": {
+        "HP": 1,
+        "Atk": 1.1,
+        "Def": 0.9,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": "+Atk, -Def"
+    },
+    "Mild": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 0.9,
+        "SpA": 1.1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": "+SpA, -Def"
+    },
+    "Modest": {
+        "HP": 1,
+        "Atk": 0.9,
+        "Def": 1,
+        "SpA": 1.1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": "+SpA, -Atk"
+    },
+    "Naive": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 0.9,
+        "Spe": 1.1,
+        "Summary": "+Spe, -SpD"
+    },
+    "Naughty": {
+        "HP": 1,
+        "Atk": 1.1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 0.9,
+        "Spe": 1,
+        "Summary": "+Atk, -SpD"
+    },
+    "Quiet": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1.1,
+        "SpD": 1,
+        "Spe": 0.9,
+        "Summary": "+SpA, -Spe"
+    },
+    "Quirky": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": ""
+    },
+    "Rash": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1.1,
+        "SpD": 0.9,
+        "Spe": 1,
+        "Summary": "+SpA, -SpD"
+    },
+    "Relaxed": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1.1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 0.9,
+        "Summary": "+Def, -Spe"
+    },
+    "Sassy": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1.1,
+        "Spe": 0.9,
+        "Summary": "+SpD, -Spe"
+    },
+    "Serious": {
+        "HP": 1,
+        "Atk": 1,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1,
+        "Summary": ""
+    },
+    "Timid": {
+        "HP": 1,
+        "Atk": 0.9,
+        "Def": 1,
+        "SpA": 1,
+        "SpD": 1,
+        "Spe": 1.1,
+        "Summary": "+Spe, -Atk"
+    }
+}
