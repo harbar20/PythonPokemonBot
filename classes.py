@@ -2,7 +2,7 @@ import requests
 import json
 
 #list of all pokemon names
-with open("pokemon_names.txt") as f:
+with open("helpers/pokemon_names.txt") as f:
     allpokemon = [i.replace('\n', '') for i in f]
 
 #imports showdown text. to be used in TeamClass
@@ -76,6 +76,11 @@ natures = ['Adamant', 'Bashful', 'Bold', 'Brave', 'Calm',
            'Modest', 'Naive', 'Naughty', 'Quiet', 'Quirky', 
            'Rash', 'Relaxed', 'Sassy', 'Serious', 'Timid']
 
+class AbilityClass():
+    def __init__(self, name, type):
+        self.MoveName = name
+        self.MoveType = type
+
 class PokemonClass():
     def __init__(self, Moves = [], Item = '', Nickname = '', Species = '', Gender = '',
                 Ability = '', Level = '100', Shiny = False, Happiness = '255', 
@@ -87,6 +92,8 @@ class PokemonClass():
         self.Species = Species
         self.Gender = Gender
         self.Ability = Ability
+        #finds the types of the given pokemon
+        self.Types = [i["type"]["name"] for i in json.load(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))["types"]]
         self.Level = Level
         self.Shiny = Shiny
         self.Happiness = Happiness
@@ -101,8 +108,8 @@ class PokemonClass():
             self.Stats[i["stat"]["name"]] = i["base-stat"]
         
         #lists of all valid attributes to this particular pokemon
-        self.validAbilities = [i["ability"]["name"] for i in json.load(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
-        self.validMoves = [i["move"]["name"] for i in json.load(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))]
+        self.validAbilities = [i["ability"]["name"] for i in json.load(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))["abilities"]]
+        self.validMoves = [i["move"]["name"] for i in json.load(requests.get(f'https://pokeapi.co/api/v2/pokemon/{self.Species}'))["moves"]]
     
     #accessor functions
     def get_Species(self):
@@ -121,6 +128,8 @@ class PokemonClass():
         return self.Item
     def get_Ability(self):
         return self.Ability
+    def get_Types(self):
+        return self.Types
     def get_EVs(self):
         return self.EVs
     def get_IVs(self):
